@@ -1,8 +1,8 @@
 import { AppDataSource } from './data-source';
-import { User } from '../modules/auth/user.entity';
-import { Product } from '../modules/products/product.entity';
 import { userFactory } from './factories/user.factory';
 import { productFactory } from './factories/product.factory';
+import { User } from '../../modules/auth/user.entity';
+import { Product } from '../../modules/products/product.entity';
 
 async function main() {
   await AppDataSource.initialize();
@@ -19,7 +19,6 @@ async function main() {
   } else {
     await userRepo.save(usersData);
   }
-
 
   console.log(`✅ User created: ${usersData.fullName} (${usersData.email})`);
 
