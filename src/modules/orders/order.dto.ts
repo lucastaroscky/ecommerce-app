@@ -51,3 +51,8 @@ export class GetOrdersFilterQueryDto {
     @Type(() => Number)
     limit?: number;
 }
+
+export class UpdateOrderStatusDto {
+    @IsEnum(OrderStatus)
+    status: string;
+}

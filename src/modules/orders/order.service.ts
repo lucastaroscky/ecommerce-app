@@ -4,6 +4,8 @@ import { Product } from "../products/product.entity";
 import { Order, OrderStatus } from "./entities/order.entity";
 import { CreateOrderDto, GetOrdersFilterQueryDto } from "./order.dto";
 import { User, UserRole } from "../auth/user/user.entity";
+import NotFoundException from "../common/exceptions/not-found.exception";
+import { ORDER_NOT_FOUND } from "../common/constants/error-messages.constants";
 
 export class OrderService {
     private orderRepository = AppDataSource.getRepository(Order);
@@ -15,7 +17,7 @@ export class OrderService {
             console.log(order)
             const productsOrder = products.map(product => {
                 return {
-                    productId: product.id,
+                    product,
                     name: product.name,
                     unitPrice: product.price,
                     quantity: order.items.find(item => item.productId === product.id)?.quantity || 0,
@@ -68,5 +70,26 @@ export class OrderService {
             limit,
             totalPages: Math.ceil(total / limit)
         }
+    }
+
+    async updateOrderStatus({ orderId, status }: { orderId: string, status: OrderStatus }) {
+        return AppDataSource.manager.transaction(async (transactionalEntityManager) => {
+            const order = await transactionalEntityManager.findOne(Order, {
+                where: { id: orderId },
+                relations: ["items", "items.product"],
+            });
+
+            if (!order) throw new NotFoundException(ORDER_NOT_FOUND);
+
+            if (status === OrderStatus.CANCELLED && order.canBeCancelled()) {
+                for (const item of order.items) {
+                    item.product.stockQuantity += item.quantity;
+                    await transactionalEntityManager.save(item.product);
+                }
+            }
+
+            order.updateStatus(status);
+            return transactionalEntityManager.save(order);
+        });
     }
 }

@@ -4,7 +4,7 @@ import { FORBIDDEN, UNAUTHORIZED } from "../constants/error-messages.constants";
 import HTTP_STATUS from "../enums/http-status.enum";
 import { UserRole } from "../../auth/user/user.entity";
 
-export function idAdminMiddleware(req: CustomRequest, res: Response, next: NextFunction) {
+export function isAdminMiddleware(req: CustomRequest, res: Response, next: NextFunction) {
     if (!req.loggedUser) {
         return res.status(HTTP_STATUS.UNAUTHORIZED).json({ code: HTTP_STATUS.UNAUTHORIZED, message: UNAUTHORIZED });
     }

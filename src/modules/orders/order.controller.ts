@@ -36,4 +36,18 @@ export class OrderController {
     }
   }
 
+  async updateOrderStatus(req: CustomRequest, res: Response, next: NextFunction) {
+    try {
+      const orderId = req.params.id;
+
+      const { status } = req.body;
+
+      const updatedOrder = await this.orderService.updateOrderStatus({ orderId, status });
+
+      return res.status(HTTP_STATUS.OK).json({ code: HTTP_STATUS.OK, data: updatedOrder });
+    }
+    catch (error) {
+      next(error);
+    }
+  }
 }

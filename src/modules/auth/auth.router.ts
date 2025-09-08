@@ -5,7 +5,7 @@ import { validateBody } from '../common/middlewares/validate-dto.middleware';
 import { AuthDto } from './auth.dto';
 import { UserDto } from './user/user.dto';
 import { authMiddleware } from '../common/middlewares/auth.middleware';
-import { idAdminMiddleware } from '../common/middlewares/admin.middleware';
+import { isAdminMiddleware } from '../common/middlewares/admin.middleware';
 
 const authRouter = Router();
 
@@ -13,6 +13,6 @@ const authService = new AuthService();
 const authController = new AuthController(authService);
 
 authRouter.post('/auth/login', validateBody(AuthDto), async (req, res, next) => authController.login(req, res, next));
-authRouter.post('/auth/register', validateBody(UserDto), authMiddleware, idAdminMiddleware, async (req, res, next) => authController.register(req, res, next));
+authRouter.post('/auth/register', validateBody(UserDto), authMiddleware, isAdminMiddleware, async (req, res, next) => authController.register(req, res, next));
 
 export default authRouter;

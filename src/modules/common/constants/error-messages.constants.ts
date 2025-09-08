@@ -3,7 +3,6 @@ export const INTERNAL_SERVER_ERROR = "Erro interno do servidor";
 export const INVALID_CREDENTIALS = "Email ou senha incorretos";
 export const USER_NOT_FOUND = "Usuário não encontrado";
 export const PRODUCT_NOT_FOUND = "Produto não encontrado";
-export const ORDER_NOT_FOUND = "Pedido não encontrado";
 export const UNAUTHORIZED = "Não autorizado";
 export const FORBIDDEN = "Permissão insuficiente para acessar este recurso";
 
@@ -18,7 +17,7 @@ export const PRODUCT_DUPLICATED = "Produto duplicado no pedido!";
 
 export const ORDER_CREATED = "Pedido criado com sucesso!";
 export const ORDER_UPDATED = "Pedido atualizado com sucesso!";
-export const ORDER_DELETED = "Pedido deletado com sucesso!";
+export const ORDER_NOT_FOUND = "Pedido não encontrado!";
 
 export const INSUFFICIENT_STOCK = "Estoque insuficiente para o produto solicitado";
 export const ORDER_CANNOT_BE_CANCELLED = "Não é possível alterar o status de um pedido cancelado";
