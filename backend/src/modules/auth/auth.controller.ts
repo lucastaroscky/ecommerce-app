@@ -31,4 +31,16 @@ export class AuthController {
       next(error);
     }
   }
+
+  async refresh(request: Request, response: Response, next: NextFunction) {
+    try {
+      const { refreshToken } = request.body;
+
+      const refreshed = await this.authService.refreshToken(refreshToken);
+
+      return response.status(HTTP_STATUS.OK).json({ code: HTTP_STATUS.OK, data: refreshed });
+    } catch (error) {
+      next(error);
+    }
+  }
 }

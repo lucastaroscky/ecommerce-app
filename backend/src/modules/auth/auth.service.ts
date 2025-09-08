@@ -1,6 +1,5 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import redis from '../../config/cache/redis';
 import { AuthDto } from './auth.dto';
 import NotFoundException from '../common/exceptions/not-found.exception';
 import { INVALID_CREDENTIALS, USER_NOT_FOUND } from '../common/constants/error-messages.constants';
@@ -13,7 +12,7 @@ export class AuthService {
     private userRepository = AppDataSource.getRepository(User);
 
     private async generateToken({ userId, email, role }: { userId: string, email: string, role: UserRole }) {
-        return jwt.sign({ userId, email, role }, process.env.JWT_ACCESS_SECRET!, { expiresIn: '1h' });
+        return jwt.sign({ userId, email, role }, process.env.JWT_ACCESS_SECRET!, { expiresIn: '15m' });
     }
 
     private async generateRefreshToken({ userId, email, role }: { userId: string, email: string, role: UserRole }) {
@@ -33,7 +32,6 @@ export class AuthService {
         const accessToken = await this.generateToken({ userId: user.id, email: user.email, role: user.role });
         const refreshToken = await this.generateRefreshToken({ userId: user.id, email: user.email, role: user.role });
 
-        await redis.set(`refresh:${user.id}`, refreshToken, 'EX', 7 * 24 * 3600);
 
         return { id: user.id, email: user.email, accessToken, refreshToken };
     }
@@ -50,14 +48,14 @@ export class AuthService {
         const accessToken = await this.generateToken({ userId: user.id, email: user.email, role: user.role });
         const refreshToken = await this.generateRefreshToken({ userId: user.id, email: user.email, role: user.role });
 
-        await redis.set(`refresh:${user.id}`, refreshToken, 'EX', 7 * 24 * 3600);
-
         return { accessToken, refreshToken };
     }
 
-    async signOut(userId: string) {
-        await redis.del(`refresh:${userId}`);
+    async refreshToken(refreshToken: string) {
+        const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET!) as { userId: string, email: string, role: UserRole };
 
-        return true;
+        const accessToken = await this.generateToken({ userId: decoded.userId, email: decoded.email, role: decoded.role });
+
+        return { accessToken, refreshToken };
     }
 }

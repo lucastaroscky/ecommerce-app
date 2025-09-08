@@ -14,5 +14,6 @@ const authController = new AuthController(authService);
 
 authRouter.post('/auth/login', validateBody(AuthDto), async (req, res, next) => authController.login(req, res, next));
 authRouter.post('/auth/register', validateBody(UserDto), authMiddleware, isAdminMiddleware, async (req, res, next) => authController.register(req, res, next));
+authRouter.post('/auth/refresh-token', async (req: Request, res: Response, next: NextFunction) => authController.refresh(req, res, next));
 
 export default authRouter;
