@@ -21,7 +21,7 @@ export class ProductController {
     try {
       const { name, description, price, photo, stockQuantity } = req.body;
 
-      const product = await this.productService.createProduct({ name, description, price, photo, stockQuantity, createdById: req.loggedUser?.id! });
+      const product = await this.productService.createProduct({ name, description, price, photo, stockQuantity, createdById: req.loggedUser?.userId! });
 
       return res.status(HTTP_STATUS.CREATED).json({ code: HTTP_STATUS.CREATED, message: PRODUCT_CREATED, data: product });
     } catch (error) {

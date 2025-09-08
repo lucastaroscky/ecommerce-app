@@ -11,5 +11,6 @@ const orderService = new OrderService();
 const orderController = new OrderController(orderService);
 
 orderRouter.post('/orders', validateBody(CreateOrderDto), authMiddleware, async (req, res, next) => orderController.createOrder(req, res, next));
+orderRouter.get('/orders', authMiddleware, async (req, res, next) => orderController.getOrders(req, res, next));
 
 export default orderRouter;

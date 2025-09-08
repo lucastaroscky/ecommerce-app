@@ -70,7 +70,7 @@ export class Product {
 
   reduceStock(quantity: number): void {
     if (!this.hasStock(quantity)) {
-      throw new BadRequestException(INSUFFICIENT_STOCK);
+      throw new BadRequestException(`${INSUFFICIENT_STOCK} - ${this.id}`);
     }
 
     this.stockQuantity -= quantity;
