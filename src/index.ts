@@ -4,9 +4,12 @@ import app from "./app";
 
 import { AppDataSource } from "./config/database/data-source";
 import redis from "./config/cache/redis";
+import { errorHandler } from './modules/middlewares/error-handler.middleware';
 
 async function startServer() {
     try {
+        app.use(errorHandler)
+
         await AppDataSource.initialize();
         console.log("✅ Database connected");
 

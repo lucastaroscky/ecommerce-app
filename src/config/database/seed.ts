@@ -1,8 +1,8 @@
 import { AppDataSource } from './data-source';
 import { userFactory } from './factories/user.factory';
 import { productFactory } from './factories/product.factory';
-import { User } from '../../modules/auth/user.entity';
 import { Product } from '../../modules/products/product.entity';
+import { User } from '../../modules/auth/user/user.entity';
 
 async function main() {
   await AppDataSource.initialize();

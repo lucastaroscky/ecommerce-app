@@ -10,8 +10,8 @@ import {
   Index,
   Check,
 } from 'typeorm';
-import { User } from '../auth/user.entity';
 import { OrderItem } from '../orders/entities/order-item.entity';
+import { User } from '../auth/user/user.entity';
 
 @Entity('products')
 @Check('"price" >= 0')

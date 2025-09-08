@@ -1,5 +1,5 @@
 import * as bcrypt from 'bcrypt';
-import { User, UserRole } from '../../../modules/auth/user.entity';
+import { User, UserRole } from '../../../modules/auth/user/user.entity';
 
 export const userFactory = async (): Promise<User> => {
     const user = new User();

@@ -1,8 +1,14 @@
+import 'dotenv/config';
 import 'reflect-metadata';
 import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
 import morgan from 'morgan';
+import authRouter from './modules/auth/auth.route';
+
+const routes = [
+    authRouter
+]
 
 const app = express();
 
@@ -11,6 +17,7 @@ app.use(cors())
 app.use(helmet())
 app.use(morgan('dev'));
 
+app.use(routes);
 
 app.get('/health', (req, res) => {
     res.json({

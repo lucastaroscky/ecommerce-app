@@ -10,8 +10,8 @@ import {
   Index,
   Check,
 } from 'typeorm';
-import { User } from '../../auth/user.entity';
 import { OrderItem } from './order-item.entity';
+import { User } from '../../auth/user/user.entity';
 
 export enum OrderStatus {
   PLACED = 'PLACED',
