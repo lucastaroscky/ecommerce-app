@@ -14,8 +14,8 @@
     "migration:show": "npm run typeorm migration:show -- -d src/config/database/data-source.ts",
     "seed": "ts-node src/config/database/seed.ts",
     "test": "echo \"No tests yet\" && exit 0",
-    "lint": "eslint 'src/**/*.ts'",
-    "lint:fix": "eslint 'src/**/*.ts' --fix"
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
