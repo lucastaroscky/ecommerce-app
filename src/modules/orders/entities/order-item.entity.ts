@@ -18,43 +18,35 @@ import { Product } from '../../products/product.entity';
 @Check('"quantity" > 0')
 @Check('"unit_price" >= 0')
 @Check('"total_price" >= 0')
-@Unique('unique_order_product', ['orderId', 'productId'])
+@Unique('unique_order_product', ['order', 'product'])
 export class OrderItem {
   @PrimaryGeneratedColumn('uuid')
-  id!: string;
+  id: string;
 
   @Column({ type: 'varchar', length: 255, name: 'name', nullable: true })
   name?: string;
 
-  @Column({ type: 'uuid', name: 'order_id' })
-  @Index('idx_order_item_order')
-  orderId!: string;
-
-  @Column({ type: 'uuid', name: 'product_id' })
-  @Index('idx_order_item_product')
-  productId!: string;
-
   @Column({ type: 'integer', name: 'quantity' })
-  quantity!: number;
+  quantity: number;
 
   @Column({ type: 'decimal', precision: 10, scale: 2, name: 'unit_price' })
-  unitPrice!: number;
+  unitPrice: number;
 
   @Column({ type: 'decimal', precision: 10, scale: 2, name: 'total_price' })
-  totalPrice!: number;
+  totalPrice: number;
 
   @CreateDateColumn({ name: 'created_at' })
-  createdAt!: Date;
+  createdAt: Date;
 
   @ManyToOne(() => Order, (order) => order.items, {
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'orderId' })
-  order!: Order;
+  @JoinColumn({ name: 'order_id' })
+  order: Order;
 
   @ManyToOne(() => Product, (product) => product.orderItems)
-  @JoinColumn({ name: 'productId' })
-  product!: Product;
+  @JoinColumn({ name: 'product_id' })
+  product: Product;
 
   @BeforeInsert()
   @BeforeUpdate()

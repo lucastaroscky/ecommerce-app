@@ -13,6 +13,8 @@ import {
 } from 'typeorm';
 import { OrderItem } from '../orders/entities/order-item.entity';
 import { User } from '../auth/user/user.entity';
+import BadRequestException from '../common/exceptions/bad-request.exception';
+import { INSUFFICIENT_STOCK } from '../common/constants/error-messages.constants';
 
 @Entity('products')
 @Check('"price" >= 0')
@@ -68,7 +70,7 @@ export class Product {
 
   reduceStock(quantity: number): void {
     if (!this.hasStock(quantity)) {
-      throw new Error('Insufficient stock');
+      throw new BadRequestException(INSUFFICIENT_STOCK);
     }
 
     this.stockQuantity -= quantity;

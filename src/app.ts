@@ -6,10 +6,12 @@ import cors from 'cors';
 import morgan from 'morgan';
 import authRouter from './modules/auth/auth.router';
 import productRouter from './modules/products/product.router';
+import orderRouter from './modules/orders/order.router';
 
 const routes = [
     authRouter,
     productRouter,
+    orderRouter,
 ]
 
 const app = express();

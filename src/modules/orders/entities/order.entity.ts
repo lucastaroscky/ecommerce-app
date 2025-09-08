@@ -9,9 +9,15 @@ import {
   JoinColumn,
   Index,
   Check,
+  BeforeInsert,
+  BeforeUpdate,
+  AfterInsert,
+  AfterUpdate,
 } from 'typeorm';
 import { OrderItem } from './order-item.entity';
 import { User } from '../../auth/user/user.entity';
+import BadRequestException from '../../common/exceptions/bad-request.exception';
+import { ORDER_CANNOT_BE_CANCELLED } from '../../common/constants/error-messages.constants';
 
 export enum OrderStatus {
   PLACED = 'PLACED',
@@ -28,10 +34,6 @@ export class Order {
 
   @Column({ type: 'varchar', length: 255, name: 'name', nullable: true })
   name?: string;
-
-  @Column({ type: 'uuid', name: 'user_id' })
-  @Index('idx_order_user')
-  userId!: string;
 
   @Column({
     type: 'enum',
@@ -56,7 +58,7 @@ export class Order {
   updatedAt!: Date;
 
   @ManyToOne(() => User, (user) => user.orders)
-  @JoinColumn({ name: 'userId' })
+  @JoinColumn({ name: 'user_id' })
   user!: User;
 
   @OneToMany(() => OrderItem, (orderItem) => orderItem.order, {
@@ -65,8 +67,10 @@ export class Order {
   })
   items!: OrderItem[];
 
-  calculateTotal(): number {
-    return this.items.reduce((total, item) => total + item.totalPrice, 0);
+  @BeforeInsert()
+  @BeforeUpdate()
+  calculateTotalAmount() {
+    this.totalAmount = this.items.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
   }
 
   canBeCancelled(): boolean {
@@ -75,8 +79,9 @@ export class Order {
 
   updateStatus(newStatus: OrderStatus): void {
     if (this.status === OrderStatus.CANCELLED && newStatus !== OrderStatus.CANCELLED) {
-      throw new Error('Cannot change status of cancelled order');
+      throw new BadRequestException(ORDER_CANNOT_BE_CANCELLED);
     }
+
     this.status = newStatus;
   }
 }

@@ -1,6 +1,8 @@
 import { Product } from './product.entity';
 import { CreateProductBodyDto, ProductQueryDto, UpdateProductBodyDto } from './product.dto';
 import { AppDataSource } from '../../config/database/data-source';
+import NotFoundException from '../common/exceptions/not-found.exception';
+import { PRODUCT_NOT_FOUND } from '../common/constants/error-messages.constants';
 
 export class ProductService {
   private productRepository = AppDataSource.getRepository(Product);
@@ -44,5 +46,15 @@ export class ProductService {
   async deleteProduct(id: string) {
     await this.productRepository.update(id, { isActive: false });
     await this.productRepository.softDelete(id);
+  }
+
+  async reduceStock(productId: string, quantity: number) {
+    const product = await this.productRepository.findOne({ where: { id: productId } });
+
+    if (!product) throw new NotFoundException(PRODUCT_NOT_FOUND);
+
+    product.reduceStock(quantity);
+
+    await this.productRepository.save(product);
   }
 }

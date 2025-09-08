@@ -16,4 +16,5 @@ productRouter.get('/products', validateQuery(ProductQueryDto), authMiddleware, a
 productRouter.post('/products', validateBody(CreateProductBodyDto), authMiddleware, idAdminMiddleware, async (req, res, next) => productController.createProduct(req, res, next));
 productRouter.patch('/products/:id', validateParams(ProductParamsDto), validateBody(UpdateProductBodyDto), authMiddleware, idAdminMiddleware, async (req, res, next) => productController.updateProduct(req, res, next));
 productRouter.delete('/products/:id', validateParams(ProductParamsDto), authMiddleware, idAdminMiddleware, async (req, res, next) => productController.deleteProduct(req, res, next));
+
 export default productRouter;

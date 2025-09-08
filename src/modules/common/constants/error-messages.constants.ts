@@ -11,13 +11,15 @@ export const INVALID_TOKEN = "Token expirado ou inválido";
 
 export const INVALID_DATA = "Dados inválidos";
 
-export const PRODUCT_UPDATED = "Produto atualizado com sucesso";
-export const PRODUCT_CREATED = "Produto criado com sucesso";
-export const PRODUCT_DELETED = "Produto deletado com sucesso";
+export const PRODUCT_UPDATED = "Produto atualizado com sucesso!";
+export const PRODUCT_CREATED = "Produto criado com sucesso!";
+export const PRODUCT_DELETED = "Produto deletado com sucesso!";
+export const PRODUCT_DUPLICATED = "Produto duplicado no pedido!";
 
-export const ORDER_CREATED = "Pedido criado com sucesso";
-export const ORDER_UPDATED = "Pedido atualizado com sucesso";
-export const ORDER_DELETED = "Pedido deletado com sucesso";
+export const ORDER_CREATED = "Pedido criado com sucesso!";
+export const ORDER_UPDATED = "Pedido atualizado com sucesso!";
+export const ORDER_DELETED = "Pedido deletado com sucesso!";
 
 export const INSUFFICIENT_STOCK = "Estoque insuficiente para o produto solicitado";
+export const ORDER_CANNOT_BE_CANCELLED = "Não é possível alterar o status de um pedido cancelado";
 
