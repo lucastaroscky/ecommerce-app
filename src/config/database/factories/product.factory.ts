@@ -1,4 +1,4 @@
-import { Product } from '../../modules/products/product.entity';
+import { Product } from "../../../modules/products/product.entity";
 
 export const productFactory = async (): Promise<Product[]> => {
   const fakerStoreApi = await fetch('https://fakestoreapi.com/products');

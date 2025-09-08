@@ -5,4 +5,5 @@ const redis = new Redis({
     port: Number(process.env.REDIS_PORT) || 6379,
 });
 
+
 export default redis;

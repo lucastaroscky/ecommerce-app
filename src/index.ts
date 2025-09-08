@@ -1,34 +1,24 @@
-import 'reflect-metadata';
-import express from 'express';
-import helmet from 'helmet';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import morgan from 'morgan';
+import 'dotenv/config';
+import "reflect-metadata";
+import app from "./app";
 
-dotenv.config();
+import { AppDataSource } from "./config/database/data-source";
+import redis from "./config/cache/redis";
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+async function startServer() {
+    try {
+        await AppDataSource.initialize();
+        console.log("✅ Database connected");
 
-app.use(express.json());
-app.use(cors())
-app.use(helmet())
-app.use(morgan('dev'));
+        redis.on('connect', () => console.log('✅ Redis connected'));
 
+        const PORT = process.env.PORT || 3000;
 
-app.get('/health', (req, res) => {
-    res.json({
-        status: 'ok',
-        uptime: process.uptime(),
-        memoryUsage: process.memoryUsage(),
-        pid: process.pid,
-        platform: process.platform,
-        nodeVersion: process.version,
-        cpuUsage: process.cpuUsage(),
-        env: process.env.NODE_ENV || 'development'
-    });
-});
+        app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
+    } catch (err) {
+        console.error("❌ Failed to start server", err);
+        process.exit(1);
+    }
+}
 
-app.listen(PORT, () => {
-    console.log(`Servidor rodando na porta ${PORT}`);
-});
+startServer();
