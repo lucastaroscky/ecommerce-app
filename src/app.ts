@@ -4,10 +4,12 @@ import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
 import morgan from 'morgan';
-import authRouter from './modules/auth/auth.route';
+import authRouter from './modules/auth/auth.router';
+import productRouter from './modules/products/product.router';
 
 const routes = [
-    authRouter
+    authRouter,
+    productRouter,
 ]
 
 const app = express();

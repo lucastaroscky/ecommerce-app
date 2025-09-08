@@ -5,7 +5,6 @@ import { INTERNAL_SERVER_ERROR } from "../constants/error-messages.constants";
 interface CustomError extends Error {
     status?: number;
     code?: number;
-    details?: any;
 }
 
 export function errorHandler(
@@ -21,6 +20,5 @@ export function errorHandler(
     return res.status(status).json({
         code,
         message,
-        details: err.details || null,
     });
 }

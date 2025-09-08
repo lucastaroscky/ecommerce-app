@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { Response, NextFunction } from 'express';
+import { Response, NextFunction, Request } from 'express';
 import jwt from 'jsonwebtoken';
 import HTTP_STATUS from '../enums/http-status.enum';
 import { INVALID_TOKEN, UNAUTHORIZED } from '../constants/error-messages.constants';
@@ -8,7 +8,7 @@ import { User } from '../../auth/user/user.entity';
 
 const JWT_ACCESS_SECRET = process.env.JWT_ACCESS_SECRET || '';
 
-export function authenticateJWT(req: CustomRequest, res: Response, next: NextFunction) {
+export function authMiddleware(req: CustomRequest, res: Response, next: NextFunction) {
     const authHeader = req.headers.authorization;
     console.log(authHeader)
     if (!authHeader || !authHeader.startsWith('Bearer ')) {

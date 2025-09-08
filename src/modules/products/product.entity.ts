@@ -9,6 +9,7 @@ import {
   JoinColumn,
   Index,
   Check,
+  DeleteDateColumn,
 } from 'typeorm';
 import { OrderItem } from '../orders/entities/order-item.entity';
 import { User } from '../auth/user/user.entity';
@@ -48,6 +49,9 @@ export class Product {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt!: Date;
+
+  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
+  deletedAt!: Date;
 
   @ManyToOne(() => User, (user) => user.createdProducts, {
     nullable: true,

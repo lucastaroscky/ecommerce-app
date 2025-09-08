@@ -56,3 +56,29 @@ export function validateQuery<T extends object>(dtoClass: new () => T) {
         }
     };
 }
+
+export function validateParams<T extends object>(dtoClass: new () => T) {
+    return async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const dto = plainToClass(dtoClass, req.params);
+            const errors = await validate(dto);
+
+            if (errors.length > 0) {
+                const errorMessages = errors.flatMap(error =>
+                    Object.values(error.constraints || {})
+                );
+
+                return res.status(HTTP_STATUS.BAD_REQUEST).json({
+                    code: HTTP_STATUS.BAD_REQUEST,
+                    message: INVALID_DATA,
+                    details: errorMessages
+                });
+            }
+
+            req.query = dto as any;
+            next();
+        } catch (error) {
+            res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ code: HTTP_STATUS.INTERNAL_SERVER_ERROR, message: INTERNAL_SERVER_ERROR });
+        }
+    };
+}
