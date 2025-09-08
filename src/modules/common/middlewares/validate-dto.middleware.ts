@@ -1,8 +1,8 @@
 import { plainToClass } from "class-transformer";
 import { validate } from "class-validator";
 import { NextFunction, Request, Response } from "express";
-import { INTERNAL_SERVER_ERROR, INVALID_DATA } from "../common/constants/error-messages.constants";
-import HTTP_STATUS from "../common/enums/http-status.enum";
+import { INTERNAL_SERVER_ERROR, INVALID_DATA } from "../constants/error-messages.constants";
+import HTTP_STATUS from "../enums/http-status.enum";
 
 export function validateBody<T extends object>(dtoClass: new () => T) {
     return async (req: Request, res: Response, next: NextFunction) => {

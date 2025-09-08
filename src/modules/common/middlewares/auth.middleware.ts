@@ -1,10 +1,10 @@
 import 'dotenv/config';
 import { Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import HTTP_STATUS from '../common/enums/http-status.enum';
-import { INVALID_TOKEN, UNAUTHORIZED } from '../common/constants/error-messages.constants';
+import HTTP_STATUS from '../enums/http-status.enum';
+import { INVALID_TOKEN, UNAUTHORIZED } from '../constants/error-messages.constants';
 import { CustomRequest } from '../interfaces/custom-request.interface';
-import { User } from '../auth/user/user.entity';
+import { User } from '../../auth/user/user.entity';
 
 const JWT_ACCESS_SECRET = process.env.JWT_ACCESS_SECRET || '';
 

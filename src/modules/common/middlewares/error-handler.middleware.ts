@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import HTTP_STATUS from "../common/enums/http-status.enum";
-import { INTERNAL_SERVER_ERROR } from "../common/constants/error-messages.constants";
+import HTTP_STATUS from "../enums/http-status.enum";
+import { INTERNAL_SERVER_ERROR } from "../constants/error-messages.constants";
 
 interface CustomError extends Error {
     status?: number;

@@ -4,7 +4,7 @@ import app from "./app";
 
 import { AppDataSource } from "./config/database/data-source";
 import redis from "./config/cache/redis";
-import { errorHandler } from './modules/middlewares/error-handler.middleware';
+import { errorHandler } from './modules/common/middlewares/error-handler.middleware';
 
 async function startServer() {
     try {

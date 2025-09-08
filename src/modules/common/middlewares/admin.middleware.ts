@@ -1,8 +1,8 @@
 import { NextFunction, Response } from "express";
 import { CustomRequest } from "../interfaces/custom-request.interface";
-import { FORBIDDEN, UNAUTHORIZED } from "../common/constants/error-messages.constants";
-import HTTP_STATUS from "../common/enums/http-status.enum";
-import { UserRole } from "../auth/user/user.entity";
+import { FORBIDDEN, UNAUTHORIZED } from "../constants/error-messages.constants";
+import HTTP_STATUS from "../enums/http-status.enum";
+import { UserRole } from "../../auth/user/user.entity";
 
 export function isAdmin(req: CustomRequest, res: Response, next: NextFunction) {
     if (!req.loggedUser) {
