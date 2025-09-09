@@ -46,6 +46,9 @@ Backend roda na porta `3001`
 
 ## 📚 Endpoints principais
 
+### Health
+- `GET /health` → informações sobre uso de memória, cpu e versão do node.
+
 ### Autenticação
 - `POST /auth/register` → cria usuário (admin)
 - `POST /auth/login` → login com email/senha
@@ -78,6 +81,8 @@ senha: Teste123
 ## 💡 Melhorias futuras (se tivesse mais tempo)
 
 - Refinar a arquitetura do **frontend** (ex.: separar em `features`, criar hooks bem definidos, usar React Query/SWR e implementar Error boundary + toasts), faltou refinamento por ter focado mais no backend por conta do tempo.
+- Controle de sessão com Redis.
+- Observabilidade: logs e monitoramento do app.
 - Criar testes unitários e de integração para backend e frontend
 - Documentar API com **Swagger/OpenAPI**
 - Configurar **CI/CD** e deploy automatizado
