@@ -1,379 +1,85 @@
-# E-commerce Backend
+# 📌 Projeto Fullstack (Next.js + Express)
 
-API backend para gerenciamento de produtos, pedidos e usuários, construída com Node.js, Express e TypeORM.
+## 🚀 Setup
 
-## 📋 Índice
+### Passos para rodar localmente
 
-- [Tecnologias](#-tecnologias)
-- [Setup do Projeto](#-setup-do-projeto)
-- [Arquitetura](#-arquitetura)
-- [Endpoints](#-endpoints)
-- [Autenticação](#-autenticação)
-- [Usuário Seed](#-usuário-seed)
-- [Melhorias Futuras](#-melhorias-futuras)
-- [Observações](#-observações)
-
-## 🚀 Tecnologias
-
-- **Node.js** - Runtime JavaScript
-- **Express** - Framework web
-- **TypeORM** - ORM para TypeScript/JavaScript
-- **PostgreSQL** - Banco de dados relacional
-- **JWT** - Autenticação via tokens
-- **class-validator** - Validação de DTOs
-- **TypeScript** - Linguagem principal
-
-## 🏗 Setup do Projeto
-
-### 1. Clone o repositório
 ```bash
-git clone <repo-url>
-cd ecommerce-backend
-```
+# 1. Clonar o repositório
+git clone https://github.com/lucastaroscky/ecommerce-app
 
-### 2. Instale as dependências
-```bash
-npm install
-```
+cd ecommerce-app
 
-### 3. Configure as variáveis de ambiente
-Crie um arquivo `.env` na raiz do projeto:
-```env
-DATABASE_URL=<sua-database-url>
-JWT_SECRET=<seu-jwt-secret>
-PORT=3000
-```
+# 2. Criar o arquivo de variáveis de ambiente
+cp .env.example .env
 
-### 4. Execute as migrations
-```bash
+# 3. Rodar as migrations
 npm run migration:run
-```
 
-### 5. Execute o seed
-```bash
+# 4. Popular a base de dados
 npm run seed
-```
 
-### 6. Inicie o container docker
-```bash
+# 5. Subir containers (front, back e postgres)
 docker-compose up -d
 ```
 
-### 6. Inicie a aplicação
-```bash
-npm run start:dev
+Frontend roda na porta `3000`
+
+Backend roda na porta `3001`
+
+
+## 🛠️ Decisões técnicas
+
+### Backend (Node + Express)
+- Estrutura **feature-first** (cada feature com suas rotas, controllers e services)
+- Uso de **TypeORM** para modelagem do banco
+- Autenticação via **JWT** (access + refresh tokens)
+- Middleware para tratamento de erros centralizado
+- Seeds para popular usuário inicial
+- Migrations
+
+### Frontend (React + Next.js)
+- Estrutura mais simples e pragmática, priorizando **clareza e entrega rápida**
+- Páginas e componentes organizados de forma básica, sem arquitetura muito rígida
+- Consumo de API com axios e interceptors pra controle de autenticação
+- UI construída com **Tailwind** por padrão no Next.js
+
+## 📚 Endpoints principais
+
+### Autenticação
+- `POST /auth/register` → cria usuário (admin)
+- `POST /auth/login` → login com email/senha
+- `POST /auth/refresh-token` → refresh token
+
+### Produtos
+- `GET /products` → lista produtos
+- `POST /products` → cria produto
+- `PATCH /products/:id` → atualiza produto (admin)
+- `DELETE /products/:id` → remove produto (admin)
+
+### Pedidos
+- `GET /orders` → lista pedidos do usuário
+- `POST /orders` → cria novo pedido
+- `PATCH /orders/:id/status` → atualiza status do pedido (admin)
+
+### Collection Postman
+
+Na raiz do projeto tem um arquivo `ecommerce.postman_collection` que facilita os testes dos endpoints via postman.
+
+## 👤 Usuário seed
+
+Após rodar as migrations + seed, você pode logar com:
+
+```
+email: teste@email.com
+senha: Teste123
 ```
 
-A API estará disponível em `http://localhost:3000`
+## 💡 Melhorias futuras (se tivesse mais tempo)
 
-## 🏛 Arquitetura
+- Refinar a arquitetura do **frontend** (ex.: separar em `features`, criar hooks bem definidos, usar React Query/SWR e implementar Error boundary + toasts), faltou refinamento por ter focado mais no backend por conta do tempo.
+- Criar testes unitários e de integração para backend e frontend
+- Documentar API com **Swagger/OpenAPI**
+- Configurar **CI/CD** e deploy automatizado
+- Melhorar experiência de UI/UX com design mais consistente
 
-### Decisões Técnicas
-- **Node.js + Express** para o backend
-- **TypeORM com PostgreSQL** para persistência
-- **DTOs + class-validator** para validação de entrada
-- **Transactions** para operações críticas (criação de pedidos e atualização de estoque)
-- **Soft delete** para produtos
-- **JWT** para autenticação e autorização
-- **Arquitetura** feature-first separada por módulos, facilitando a leitura e escalabilidade.
-
-### Relacionamentos Principais
-```
-Order → OrderItem (OneToMany, cascade)
-OrderItem → Product (ManyToOne)
-Order → User (ManyToOne)
-```
-
-## 🛠 Endpoints da API
-
-### 🔐 Autenticação (`/auth`)
-
-#### Registrar Usuário
-```http
-POST /auth/register
-Authorization: Bearer {token} (apenas ADMIN)
-Content-Type: application/json
-```
-
-**Body:**
-```json
-{
-    "firstName": "Lucas",
-    "lastName": "Staroscky", 
-    "email": "user@example.com",
-    "password": "@Teste123",
-    "role": "USER"
-}
-```
-
-**Respostas:**
-- `201` - Usuário criado com sucesso (retorna tokens)
-- `403` - Permissão insuficiente para acessar este recurso
-
-#### Login
-```http
-POST /auth/login
-Content-Type: application/json
-```
-
-**Body:**
-```json
-{
-    "email": "teste@email.com",
-    "password": "Teste123"
-}
-```
-
-**Respostas:**
-- `200` - Login realizado (retorna `accessToken` e `refreshToken`)
-- `400` - Dados inválidos com detalhes dos erros de validação
-
----
-
-### 📦 Produtos (`/products`)
-
-#### Listar Produtos
-```http
-GET /products?name={filtro}&page={1}&limit={10}&sort={name}&order={ASC|DESC}
-Authorization: Bearer {token}
-```
-
-**Query Parameters:**
-- `name` - Filtro por nome do produto
-- `page` - Página (default: 1)  
-- `limit` - Itens por página (default: 10)
-- `sort` - Campo para ordenação
-- `order` - Direção da ordenação (ASC/DESC)
-
-**Resposta 200:**
-```json
-{
-    "code": 200,
-    "data": {
-        "products": [...],
-        "total": 20,
-        "page": 1,
-        "limit": 10,
-        "totalPages": 2
-    }
-}
-```
-
-#### Criar Produto
-```http
-POST /products
-Authorization: Bearer {token} (apenas ADMIN)
-Content-Type: application/json
-```
-
-**Body:**
-```json
-{
-    "name": "Nome do Produto",
-    "description": "Descrição detalhada",
-    "price": 99.99,
-    "photo": "https://example.com/image.jpg",
-    "stockQuantity": 10
-}
-```
-
-**Respostas:**
-- `201` - Produto criado com sucesso
-- `403` - Permissão insuficiente
-
-#### Atualizar Produto
-```http
-PATCH /products/{id}
-Authorization: Bearer {token} (apenas ADMIN)
-Content-Type: application/json
-```
-
-**Body:**
-```json
-{
-    "name": "Novo nome do produto"
-}
-```
-
-**Resposta 200:**
-```json
-{
-    "code": 200,
-    "message": "Produto atualizado com sucesso"
-}
-```
-
-#### Deletar Produto (Soft Delete)
-```http
-DELETE /products/{id}
-Authorization: Bearer {token} (apenas ADMIN)
-```
-
-**Respostas:**
-- `204` - Produto deletado com sucesso (sem conteúdo)
-
----
-
-### 🛒 Pedidos (`/orders`)
-
-#### Criar Pedido
-```http
-POST /orders
-Authorization: Bearer {token}
-Content-Type: application/json
-```
-
-**Body:**
-```json
-{
-    "name": "Pedido teste",
-    "notes": "entrega portaria",
-    "items": [
-        {
-            "productId": "8fc3b160-97aa-4264-911b-ab75c394f3da",
-            "quantity": 2
-        },
-        {
-            "productId": "65ac1ce5-769a-4268-8ea4-a5d35e21f1e7", 
-            "quantity": 1
-        }
-    ]
-}
-```
-
-**Resposta 201:**
-```json
-{
-    "code": 201,
-    "message": "Pedido criado com sucesso!",
-    "data": {
-        "id": "63b48eea-9cd5-43ed-9cc7-11dce70481bb",
-        "name": "Pedido teste",
-        "notes": "entrega portaria",
-        "status": "PLACED",
-        "totalAmount": 333.88,
-        "items": [...],
-        "createdAt": "2025-09-08T20:54:38.867Z"
-    }
-}
-```
-
-#### Listar Pedidos
-```http
-GET /orders?status={PLACED|PAID|SHIPPED|CANCELLED}&page={1}&limit={10}
-Authorization: Bearer {token}
-```
-
-**Query Parameters:**
-- `status` - Filtro por status (apenas para ADMIN)
-- `page` - Página (default: 1)
-- `limit` - Itens por página (default: 10)
-
-**Comportamento:**
-- **Usuário comum:** Vê apenas seus próprios pedidos
-- **Admin:** Vê todos os pedidos, pode filtrar por status
-
-**Resposta 200:**
-```json
-{
-    "code": 200,
-    "data": {
-        "orders": [...],
-        "total": 1,
-        "page": 1,
-        "limit": 10,
-        "totalPages": 1
-    }
-}
-```
-
-#### Atualizar Status do Pedido
-```http
-PATCH /orders/{id}/status
-Authorization: Bearer {token}
-Content-Type: application/json
-```
-
-**Body:**
-```json
-{
-    "status": "SHIPPED"
-}
-```
-
-**Status Válidos:**
-- `PLACED` - Pedido realizado
-- `PAID` - Pedido pago  
-- `SHIPPED` - Pedido enviado
-- `CANCELLED` - Pedido cancelado (devolve estoque automaticamente)
-
-**Respostas:**
-- `200` - Status atualizado com sucesso
-- `404` - Pedido não encontrado
-
-## 🔐 Autenticação
-
-### Níveis de Acesso
-- **Usuário comum**: Acessa apenas seus próprios pedidos
-- **Admin**: Acesso completo a todos os recursos
-
-### Token JWT
-Inclua o token no header das requisições autenticadas:
-```
-Authorization: Bearer <seu-jwt-token>
-```
-
-## 👤 Usuário Seed
-
-Usuário administrador padrão para testes:
-```json
-{
-  "name": "Admin User",
-  "email": "teste@email.com",
-  "password": "Teste123",
-  "role": "ADMIN"
-}
-```
-
-## 🔄 Funcionalidades Automáticas
-
-### Criação de Pedidos
-- Salva automaticamente `OrderItems` com `unitPrice` e `totalPrice`
-- Atualiza o estoque do produto em tempo real
-- Utiliza transações para garantir consistência
-
-### Cancelamento de Pedidos
-- Devolve produtos ao estoque automaticamente
-- Mantém histórico do pedido cancelado
-
-## 💡 Melhorias Futuras
-
-### Infraestrutura
-- [ ] Middleware global para tratamento de erros e logging
-- [ ] Testes unitários e de integração
-- [ ] Cache para listagens de produtos e pedidos
-
-### Funcionalidades
-- [ ] Filtros avançados de produtos (preço, categoria, disponibilidade)
-- [ ] Controle de estoque mais robusto (reserva de estoque)
-- [ ] Dashboard administrativo
-- [ ] Notificações por email
-- [ ] Sistema de categorias de produtos
-- [ ] Histórico de preços
-- [ ] Controle de sessão com Redis
-
-### Performance
-- [ ] Paginação com cursor
-- [ ] Compressão de respostas
-- [ ] Rate limiting
-- [ ] Otimização de queries
-
-## 📄 Observações
-
-- **Valores monetários**: Todos usam `decimal` com precisão 10 e escala 2
-- **DTOs**: Validam entradas, mas nem todos os campos são visíveis no body
-- **Transações**: Garantem consistência em operações críticas
-- **Soft Delete**: Produtos deletados são marcados como inativos, não removidos fisicamente
-- **Paginação**: Padrão de 10 itens por página, customizável via parâmetro `limit`
-
----
