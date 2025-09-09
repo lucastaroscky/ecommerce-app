@@ -7,7 +7,7 @@ import { PRODUCT_NOT_FOUND } from '../common/constants/error-messages.constants'
 export class ProductService {
   private productRepository = AppDataSource.getRepository(Product);
 
-  async findAll(filters: ProductQueryDto): Promise<{ products: Product[]; total: number, page: number, limit: number, totalPages: number }> {
+  async findAll(filters: ProductQueryDto): Promise<{ products: Product[]; pagination: { total: number, page: number, limit: number, totalPages: number } }> {
     const query = this.productRepository.createQueryBuilder('product');
 
     const { name, page = 1, limit = 10, sort = "created_at", order = "ASC" } = filters;
@@ -22,14 +22,14 @@ export class ProductService {
 
     const [products, total] = await query.getManyAndCount();
 
-
-
     return {
       products,
-      total,
-      page,
-      limit,
-      totalPages: Math.ceil(total / limit)
+      pagination: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit)
+      }
     }
   }
 

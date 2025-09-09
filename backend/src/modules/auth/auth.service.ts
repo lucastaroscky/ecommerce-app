@@ -48,7 +48,7 @@ export class AuthService {
         const accessToken = await this.generateToken({ userId: user.id, email: user.email, role: user.role });
         const refreshToken = await this.generateRefreshToken({ userId: user.id, email: user.email, role: user.role });
 
-        return { accessToken, refreshToken };
+        return { accessToken, refreshToken, user: { id: user.id, email: user.email, role: user.role, name: user.firstName } };
     }
 
     async refreshToken(refreshToken: string) {
