@@ -16,7 +16,7 @@ export class AuthService {
     }
 
     private async generateRefreshToken({ userId, email, role }: { userId: string, email: string, role: UserRole }) {
-        return jwt.sign({ userId, email, role }, process.env.JWT_ACCESS_SECRET!, { expiresIn: '7d' });
+        return jwt.sign({ userId, email, role }, process.env.JWT_REFRESH_SECRET!, { expiresIn: '7d' });
     }
 
     async signUp(userDto: UserDto) {
