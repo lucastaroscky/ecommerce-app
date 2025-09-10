@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Product, useProducts } from '../hooks/useProducts';
 import { ProductCard } from '../components/ProductCard';
 import { Header } from '@/app/components/Header';
@@ -9,6 +9,7 @@ import useDebounce from '../hooks/useDebounce';
 import { useAuth } from '../context/AuthContext';
 import { UserRole } from '../enums/roles.enum';
 import ProductForm from '../components/ProductForm';
+import { FilterLabels, SortOptions } from '../enums/labels.enum';
 
 export default function ProductsPage() {
     const { addToCart } = useCartContext();
@@ -19,6 +20,7 @@ export default function ProductsPage() {
     const [search, setSearch] = useState('');
     const [sort, setSort] = useState<'price' | 'name' | 'created_at'>('created_at');
     const [order, setOrder] = useState<'ASC' | 'DESC'>('ASC');
+    const [filterLabel, setFilterLabel] = useState<SortOptions>(SortOptions.created_asc)
 
     const [showForm, setShowForm] = useState(false);
     const [editingProduct, setEditingProduct] = useState<Product | null>(null);
@@ -30,13 +32,17 @@ export default function ProductsPage() {
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPage(1);
         setSearch(e.target.value);
+        setSort(sort)
+        setOrder(order)
     };
 
     const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setPage(1);
-        const [field, direction] = e.target.value.split('_');
+        const value = e.target.value;
+        const [field, direction] = value.split('_');
+
         setSort(field as typeof sort);
-        setOrder(direction as 'ASC' | 'DESC');
+        setOrder(direction.toUpperCase() as typeof order);
+        setFilterLabel(value as SortOptions)
     };
 
     const handleCreateProduct = () => {
@@ -68,16 +74,15 @@ export default function ProductsPage() {
                 />
 
                 <select
-                    value={`${sort}_${order}`}
+                    value={filterLabel}
                     onChange={handleSortChange}
                     className="border-2 border-blue-500 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 rounded-lg px-4 py-2 shadow-sm transition bg-white text-black font-medium"
                 >
-                    <option value="name_asc">Nome A-Z</option>
-                    <option value="name_desc">Nome Z-A</option>
-                    <option value="price_asc">Preço Crescente</option>
-                    <option value="price_desc">Preço Decrescente</option>
-                    <option value="created_at_asc">Mais antigos</option>
-                    <option value="created_at_desc">Mais novos</option>
+                    {Object.entries(FilterLabels).map(([value, label]) => (
+                        <option key={value} value={value}>
+                            {label}
+                        </option>
+                    ))}
                 </select>
             </div>
 

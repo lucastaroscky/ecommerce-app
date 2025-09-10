@@ -28,27 +28,27 @@ export const useProducts = (page = 1, limit = 10, name = '', sort = '', order = 
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
-
     useEffect(() => {
-        const fetchProducts = async () => {
-            setLoading(true);
-            try {
-                const response = await api.get(`/products?page=${page}&limit=${limit}&name=${name}&sort=${sort}&order=${order}`);
-                const data = response.data.data;
-
-                setProducts(data.products);
-                setPagination(data.pagination);
-            } catch (err) {
-                const error = err as AxiosError<{ message: string }>;
-                const message = error.response?.data?.message || "Erro ao buscar produtos";
-                setError(message);
-            } finally {
-                setLoading(false);
-            }
-        };
-
         fetchProducts();
     }, [page, limit, name, sort, order]);
 
-    return { products, pagination, loading, error };
+    const fetchProducts = async () => {
+        setLoading(true);
+        try {
+            const response = await api.get(`/products?page=${page}&limit=${limit}&name=${name}&sort=${sort}&order=${order}`);
+            const data = response.data.data;
+
+            setProducts(data.products);
+            setPagination(data.pagination);
+        } catch (err) {
+            const error = err as AxiosError<{ message: string }>;
+            const message = error.response?.data?.message || "Erro ao buscar produtos";
+            setError(message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+
+    return { products, pagination, loading, fetchProducts, error };
 };

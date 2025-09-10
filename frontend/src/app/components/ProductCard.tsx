@@ -2,6 +2,7 @@
 import React from 'react';
 import { CartItem } from '../hooks/useCart';
 import Image from 'next/image';
+import { Images } from 'lucide-react';
 
 interface ProductCardProps {
     id: string;
@@ -20,7 +21,17 @@ export function ProductCard({
         <div className="border rounded-lg shadow-sm hover:shadow-md hover:scale-[1.02] transition transform bg-white flex flex-col">
             {/* Imagem */}
             <div className="flex items-center justify-center bg-gray-50 h-48 rounded-t">
-                <Image src={photo} alt={name} width={500} height={500} className="h-40 object-contain" />
+                {photo ? (
+                    <Image
+                        src={photo}
+                        alt={name}
+                        width={500}
+                        height={500}
+                        className="h-40 object-contain"
+                    />
+                ) : (
+                    <Images className="text-gray-400 w-16 h-16" />
+                )}
             </div>
 
             {/* Conteúdo */}
