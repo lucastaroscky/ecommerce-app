@@ -1,6 +1,6 @@
-import { AuthProvider } from './context/AuthContext';
-import { CartProvider } from './context/CartContext';
-import { OrdersProvider } from './context/Orderscontext';
+import { AuthProvider } from './common/context/AuthContext';
+import { CartProvider } from './common/context/CartContext';
+import { OrdersProvider } from './common/context/Orderscontext';
 import './globals.css';
 import { ReactNode } from 'react';
 

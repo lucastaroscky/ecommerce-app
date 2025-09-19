@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import api from '../services/api';
 import { useAuth, User } from '../context/AuthContext';
 import Cookies from 'js-cookie';
 import { AxiosError } from 'axios';
+import api from '@/app/services/api';
 
 interface LoginResponse {
     data: {

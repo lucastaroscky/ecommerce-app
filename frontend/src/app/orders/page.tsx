@@ -3,9 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
 import { Header } from '@/app/components/Header';
-import { OrderStatus } from '../enums/order.enum';
-import { useAuth } from '../context/AuthContext';
-import { UserRole } from '../enums/roles.enum';
+import { OrderStatus } from '../common/enums/order.enum';
+import { useAuth } from '../common/context/AuthContext';
+import { UserRole } from '../common/enums/roles.enum';
 
 interface OrderItem {
     id: string;

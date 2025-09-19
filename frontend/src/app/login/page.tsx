@@ -1,7 +1,7 @@
 'use client';
 
-import { useLogin } from '@/app/hooks/useLogin';
 import { useState } from 'react';
+import { useLogin } from '../common/hooks/useLogin';
 
 export default function LoginPage() {
     const { login, loading, error } = useLogin();

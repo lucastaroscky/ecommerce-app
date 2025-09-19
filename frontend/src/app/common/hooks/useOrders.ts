@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { AxiosError } from 'axios';
-import api from '../services/api';
 import { OrderStatus } from '../enums/order.enum';
+import api from '@/app/services/api';
 
 export interface OrderItem {
     productId: string;

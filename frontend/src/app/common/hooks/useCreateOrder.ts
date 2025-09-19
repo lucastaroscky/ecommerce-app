@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { AxiosError } from 'axios';
 import { useOrdersContext, OrderItem } from '../context/Orderscontext';
-import api from '../services/api';
+import api from '@/app/services/api';
 
 interface UseCreateOrderReturn {
     createOrder: (items: OrderItem[]) => Promise<void>;

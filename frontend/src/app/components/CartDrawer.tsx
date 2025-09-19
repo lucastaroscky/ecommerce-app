@@ -1,10 +1,10 @@
 'use client';
 
 import Image from 'next/image';
-import { useCartContext } from '../context/CartContext';
 import { X } from 'lucide-react';
-import { useCreateOrder } from '../hooks/useCreateOrder';
 import { useRouter } from 'next/navigation';
+import { useCartContext } from '../common/context/CartContext';
+import { useCreateOrder } from '../common/hooks/useCreateOrder';
 
 interface CartDrawerProps {
     isOpen: boolean;

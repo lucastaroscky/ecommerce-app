@@ -1,8 +1,8 @@
 'use client';
 import React from 'react';
-import { CartItem } from '../hooks/useCart';
 import Image from 'next/image';
 import { Images } from 'lucide-react';
+import { CartItem } from '../common/hooks/useCart';
 
 interface ProductCardProps {
     id: string;

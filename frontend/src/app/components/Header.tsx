@@ -1,10 +1,10 @@
 'use client';
 import Link from 'next/link';
 import { useState } from 'react';
-import { useCartContext } from '../context/CartContext';
 import { ShoppingCartIcon } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
 import { CartDrawer } from './CartDrawer';
+import { useAuth } from '../common/context/AuthContext';
+import { useCartContext } from '../common/context/CartContext';
 
 export function Header() {
     const [isCartOpen, setIsCartOpen] = useState(false);

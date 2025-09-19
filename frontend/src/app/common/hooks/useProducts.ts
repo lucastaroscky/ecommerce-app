@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from "react";
-import api from "../services/api";
 import { AxiosError } from "axios";
+import api from "@/app/services/api";
 
 export interface Product {
     id: string;

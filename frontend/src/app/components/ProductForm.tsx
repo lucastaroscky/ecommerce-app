@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Product } from "../hooks/useProducts";
 import api from "../services/api";
+import { Product } from "../common/hooks/useProducts";
 
 interface ProductFormProps {
     product?: Product | null;

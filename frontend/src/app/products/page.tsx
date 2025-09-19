@@ -1,15 +1,15 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { Product, useProducts } from '../hooks/useProducts';
 import { ProductCard } from '../components/ProductCard';
 import { Header } from '@/app/components/Header';
 import Pagination from '../components/Pagination';
-import { useCartContext } from '../context/CartContext';
-import useDebounce from '../hooks/useDebounce';
-import { useAuth } from '../context/AuthContext';
-import { UserRole } from '../enums/roles.enum';
 import ProductForm from '../components/ProductForm';
-import { FilterLabels, SortOptions } from '../enums/labels.enum';
+import { useAuth } from '../common/context/AuthContext';
+import { useCartContext } from '../common/context/CartContext';
+import { SortOptions, FilterLabels } from '../common/enums/labels.enum';
+import { UserRole } from '../common/enums/roles.enum';
+import useDebounce from '../common/hooks/useDebounce';
+import { Product, useProducts } from '../common/hooks/useProducts';
 
 export default function ProductsPage() {
     const { addToCart } = useCartContext();
